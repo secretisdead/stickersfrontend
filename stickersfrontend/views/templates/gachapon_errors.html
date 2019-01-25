@@ -1,0 +1,22 @@
+{% for error in errors %}
+	{% if (
+			'You already got a sticker recently' == error
+			and last_received_datetime
+			and next_available_datetime
+		) %}
+		<p class="form_error">
+			You already got a sticker recently (<span 
+				data-timestamp="{{ last_received_datetime.timestamp()|int }}">
+				{{ last_received_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</span>)
+			<br>
+			Next sticker available: 
+			<span 
+				data-timestamp="{{ next_available_datetime.timestamp()|int }}">
+				{{ next_available_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</span>
+		</p>
+	{% else %}
+		<p class="form_error">{{ error }}</p>
+	{% endif %}
+{% endfor %}

@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block title %}Gachapon{% endblock %}
+{% block content %}
+	<h1>Gachapon</h1>
+	{% include 'gachapon_errors.html' %}
+	{% if sticker %}
+		<p class="gachapon_success">You got a sticker!</p>
+		<div id="gachapon">
+			{% from 'stickers.jinja' import sticker_image %}
+			{{ sticker_image(sticker) }}
+	{% else %}
+		<div id="gachapon">
+	{% endif %}
+		<a 
+			id="use_gachapon" 
+			href="{{ url_for('stickers_signed_in.gachapon', request=1) }}" 
+			data-action="{{ url_for('stickers_api.api_gachapon') }}">
+			Use the gachapon
+		</a>
+	</div>
+{% endblock %}

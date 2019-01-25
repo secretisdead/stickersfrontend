@@ -1,0 +1,21 @@
+<span 
+	class="sticker" 
+	title="{{ sticker.display }}"
+	data-name="{{ sticker.name }}" 
+	data-id="{{ sticker.id }}">
+	{% if sticker and sticker.image %}
+		<picture>
+			<source 
+				srcset="{{ sticker.image }}.webp" 
+				type="image/webp">
+			<source 
+				srcset="{{ sticker.image }}.png" 
+				type="image/png">
+			<img 
+				src="{{ sticker.image }}.png" 
+				alt="{{ sticker.display }}">
+		</picture>
+	{% else %}
+		No sticker image
+	{% endif %}
+</span>

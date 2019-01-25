@@ -1,0 +1,67 @@
+{% for error in errors %}
+	<p class="form_error">{{ error }}</p>
+{% endfor %}
+<form method="post" enctype="multipart/form-data" novalidate>
+	{% if sticker %}
+		{% from 'stickers.jinja' import sticker_image %}
+		<div class="sticker_preview">
+			{{ sticker_image(sticker) }}
+		</div>
+		<input id="remove_sticker_image" name="remove_sticker_image" type="checkbox">
+		<label for="remove_sticker_image">Remove image</label>
+		<br>
+	{% endif %}
+	<span class="form_file">
+		<label for="sticker_image">Sticker image</label>
+		<input id="sticker_image" name="sticker_image" type="file" required>
+		<span 
+			class="file_selection" 
+			data-file-selected="File selected" 
+			data-file-not-selected="No file selected"></span>
+	</span>
+	<br>
+	<label for="name">Name</label>
+	<input 
+		id="name" 
+		name="name" 
+		type="text" 
+		value="{{ name }}">
+	<br>
+	<label for="display">Display</label>
+	<input 
+		id="display" 
+		name="display" 
+		type="text" 
+		value="{{ display }}">
+	<br>
+	<label for="category">Category</label>
+	<select 
+		id="category" 
+		name="category">
+		{% from 'stickers.jinja' import sticker_category_display %}
+		{% for available_category in g.stickers.config['categories'] %}
+			<option 
+				value="{{ available_category }}"{% if category == available_category %} selected{% endif %}>
+				{{ sticker_category_display(available_category) }}
+			</option>
+		{% endfor %}
+	</select>
+	<br>
+	<label for="category_order">Order within category</label>
+	<input 
+		id="category_order" 
+		name="category_order" 
+		type="text" 
+		value="{% if not category_order %}0{% else %}{{ category_order }}{% endif %}">
+	<br>
+	{% from 'permissions.jinja' import group_display %}
+	{% for group in groups %}
+		<input 
+			id="group_{{ group }}" 
+			name="group_{{ group }}" 
+			type="checkbox"{% if group in selected_groups %} checked{% endif %}>
+		<label for="group_{{ group }}">{{ '{} only'.format(group_display(group)) }}</label>
+		<br>
+	{% endfor %}
+	<input type="submit" value="Save changes">
+</form>

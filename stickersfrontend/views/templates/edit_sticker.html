@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block title %}Edit sticker{% endblock %}
+{% block content %}
+	<h1>Edit sticker</h1>
+	<nav>
+		<a 
+			href="{{ url_for('stickers_admin.collected_stickers_list', sticker_id=sticker.id) }}">
+			Collections
+		</a> 
+		<a 
+			href="{{ url_for('stickers_admin.sticker_placements_list', sticker_id=sticker.id) }}">
+			Placements
+		</a> 
+		<a href="{{ url_for('stickers_admin.stickers_list') }}">Return</a>
+	</nav>
+	{% include 'sticker_form.html' %}
+{% endblock %}

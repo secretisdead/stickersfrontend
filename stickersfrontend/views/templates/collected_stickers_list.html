@@ -1,0 +1,137 @@
+{% extends 'layout.html' %}
+{% block title %}Collected stickers list{% endblock %}
+{% block content %}
+	<h1>Collected stickers list</h1>
+	<nav>
+		<a 
+			href="{{ url_for('stickers_admin.grant_sticker') }}" 
+			title="Grant sticker">
+			Grant sticker
+		</a>
+	</nav>
+	{% from 'stickers.jinja' import sticker_image %}
+	{% from 'users.jinja' import edit_user_link %}
+	{% macro render_result(result) %}
+		<tr>
+			<td>
+				<a 
+					href="{{ url_for(
+						'stickers_admin.collected_stickers_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						id=result.id,
+					) }}" 
+					title="View collected sticker in list">
+					○
+				</a>
+			</td>
+			<td data-timestamp="{{ result.receive_time }}">
+				{{ result.receive_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</td>
+			<td>
+				<a href="{{ url_for(
+						'stickers_admin.collected_stickers_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						user_id=result.user_id,
+					) }}" 
+					title="Search stickers collected by this user">
+					(Search)
+				</a> 
+				{% if result.user %}
+					{{ edit_user_link(result.user) }}
+				{% else %}
+					{{ result.user_id }}
+				{% endif %}
+			</td>
+			<td>
+				<a href="{{ url_for(
+						'stickers_admin.collected_stickers_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						sticker_id=result.sticker_id,
+					) }}" 
+					title="Search this sticker">
+					(Search)
+				</a> 
+				<a 
+					href="{{ url_for(
+						'stickers_admin.edit_sticker',
+						sticker_id=result.sticker_id,
+					) }}" 
+					title="Edit sticker">
+					{{ sticker_image(result.sticker) }}
+				</a>
+			</td>
+			<td>
+				<a 
+					href="{{ url_for(
+						'stickers_admin.revoke_sticker',
+						collected_sticker_id=result.id,
+						redirect_uri=request.url,
+					) }}" 
+					title="Revoke this sticker">
+					Revoke
+				</a>
+			</td>
+		</tr>
+	{% endmacro %}
+	{% set columns = [
+		{
+			'name': 'id',
+			'label': 'ID',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'receive_time',
+			'label': 'Received',
+			'sortable': True,
+			'searchable': True,
+			'type': 'amount',
+			'less_than_name': 'received_before',
+			'less_than_label': 'Received before',
+			'less_than_placeholder': 'Datetime string',
+			'greater_than_name': 'received_after',
+			'greater_than_label': 'Received after',
+			'greater_than_placeholder': 'Datetime string',
+		},
+		{
+			'name': 'user_id',
+			'label': 'User',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'User ID',
+		},
+		{
+			'name': 'sticker_id',
+			'label': 'Sticker',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'Sticker ID',
+		},
+		{
+			'name': 'revoke',
+			'label': 'Revoke',
+			'sortable': False,
+			'searchable': False,
+		},
+	] %}
+	{% from 'tabular_list.jinja' import tabular_list %}
+	{{ tabular_list(
+		columns,
+		'stickers_admin.collected_stickers_list',
+		results,
+		total_results,
+		render_result,
+		total_pages,
+		pagination,
+		search,
+	) }}
+{% endblock %}

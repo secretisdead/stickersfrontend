@@ -1,0 +1,13 @@
+{% from 'sticker_categories.jinja' import sticker_categories %}
+
+{% macro sticker_category_display(sticker_category) %}
+	{% if sticker_category in sticker_categories %}
+		{{ sticker_categories[sticker_category] }}
+	{% else %}
+		{{ sticker_category }}
+	{% endif %}
+{% endmacro %}
+
+{% macro sticker_image(sticker) %}
+	{% include 'sticker.html' %}
+{% endmacro %}

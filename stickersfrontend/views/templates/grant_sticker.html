@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block title %}Grant sticker{% endblock %}
+{% block content %}
+	<h1>Grant sticker</h1>
+	<nav>
+		<a href="{{ url_for('stickers_admin.collected_stickers_list') }}">Return</a>
+	</nav>
+	{% for error in errors %}
+		<p class="form_error">{{ error }}</p>
+	{% endfor %}
+	<form method="post">
+		<label for="user_id">User ID</label>
+		<input 
+			id="user_id" 
+			name="user_id" 
+			type="text" 
+			value="{{ user_id }}">
+		<br>
+		<label for="sticker_id">Sticker</label>
+		<select 
+			id="sticker_id" 
+			name="sticker_id">
+			{% for sticker in stickers.values() %}
+				<option 
+					value="{{ sticker.id }}"{% if sticker.id == sticker_id %} selected{% endif %}>
+					{{ sticker.name }}
+				</option>
+			{% endfor %}
+		</select>
+		<br>
+		<input type="submit" value="Grant">
+	</form>
+{% endblock %}

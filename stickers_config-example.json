@@ -1,0 +1,37 @@
+{
+	"db_prefix": "",
+
+	"temp_path": "path/to/temporary/directory",
+	"sticker_images_path": "path/to/sticker/images/directory",
+	"sticker_placements_path": "path/to/sticker/placements/directory",
+
+	"sticker_image_file_uri": "",
+
+	"sticker_edge": 64,
+
+	"place_sticker_cooldown_amount": 128,
+	"place_sticker_cooldown_period": 86400,
+
+	"receive_sticker_cooldown_amount": 1,
+	"receive_sticker_cooldown_period": 43200,
+	"receive_sticker_cooldown_periods_by_utc": false,
+
+	"maximum_name_length": 16,
+	"maximum_display_length": 16,
+
+	"categories": [
+		"people",
+		"nature",
+		"food",
+		"activity",
+		"objects",
+		"symbols"
+	],
+
+	"maximum_stickers_per_target": 3,
+
+	"maximum_stickers_per_target_custom": {
+		"admin": -1,
+		"stickers-time-out": 0
+	}
+}

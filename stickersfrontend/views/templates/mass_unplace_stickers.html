@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block title %}Mass unplace stickers{% endblock %}
+{% block content %}
+	<h1>Mass unplace stickers</h1>
+	<nav>
+		<a href="{{ url_for('stickers_admin.sticker_placements_list') }}">Return</a>
+	</nav>
+	<form method="post">
+		<label for="user_id">User ID</label>
+		<input 
+			id="user_id" 
+			name="user_id" 
+			type="text">
+		<br>
+		<input type="submit" value="Unplace">
+	</form>
+{% endblock %}
