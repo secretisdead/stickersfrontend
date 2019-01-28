@@ -386,10 +386,13 @@ def unplace_stickers():
 		return render_template('mass_unplace_stickers.html')
 	if 'user_id' not in request.form:
 		abort(400)
-	#TODO get all subjects target user has placed stickers on
-	#TODO and generate their sticker placements files?
+	placements = g.stickers.search_sticker_placements(
+		filter={'user_ids': request.form['user_id']},
+	)
 	g.stickers.unplace_by_user(
 		request.form['user_id'],
 		g.stickers.accounts.current_user.id_bytes,
 	)
+	for placement in placements.values():
+		g.stickers.generate_sticker_placements_file(placement.subject_id)
 	return redirect(url_for('stickers_admin.sticker_placements_list'), code=303)
