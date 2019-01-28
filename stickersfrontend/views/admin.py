@@ -390,6 +390,6 @@ def unplace_stickers():
 	#TODO and generate their sticker placements files?
 	g.stickers.unplace_by_user(
 		request.form['user_id'],
-		g.stickers.current_user.id_bytes,
+		g.stickers.accounts.current_user.id_bytes,
 	)
 	return redirect(url_for('stickers_admin.sticker_placements_list'), code=303)
