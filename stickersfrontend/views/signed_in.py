@@ -99,22 +99,7 @@ def api_unplace_sticker():
 	g.stickers.generate_sticker_placements_file(placement.subject_id)
 	return '', 200
 
-@stickers_api.route('/gachapon', methods=['POST'])
-def api_gachapon():
-	#TODO
-	return '', 200
-
-stickers_signed_in = Blueprint(
-	'stickers_signed_in',
-	__name__,
-	template_folder='templates',
-)
-
-@stickers_signed_in.route('/gachapon')
-@require_sign_in
-def gachapon():
-	if 'request' not in request.args:
-		return render_template('gachapon.html')
+def process_gachapon_request():
 	collected_stickers = g.stickers.search_collected_stickers(
 		filter={'user_ids': g.stickers.accounts.current_user.id_bytes},
 	)
@@ -144,6 +129,57 @@ def gachapon():
 				sticker.id_bytes,
 				g.stickers.accounts.current_user.id_bytes,
 			)
+	return sticker, errors, next_available_datetime, last_received_datetime
+
+@stickers_api.route('/gachapon', methods=['POST'])
+@require_sign_in
+def api_gachapon():
+	def minify(text):
+		return text.replace(
+			'\r',
+			'',
+		).replace(
+			'\n',
+			'',
+		).replace(
+			'\t',
+			'',
+		)
+	sticker, errors, next_available_datetime, last_received_datetime = process_gachapon_request()
+	if errors:
+		response_data = {
+			'message': minify(
+				render_template(
+					'gachapon_errors.html',
+					errors=errors,
+					next_available_datetime=next_available_datetime,
+					last_received_datetime=last_received_datetime,
+				)
+			)
+		}
+		status = 400
+	else:
+		response_data = {
+			'sticker': minify(render_template('sticker.html', sticker=sticker)),
+			'message': minify(render_template('gachapon_success.html')),
+		}
+		status = 200
+	r = make_response(json.dumps(response_data))
+	r.mimetype = 'application/json'
+	return r, status
+
+stickers_signed_in = Blueprint(
+	'stickers_signed_in',
+	__name__,
+	template_folder='templates',
+)
+
+@stickers_signed_in.route('/gachapon')
+@require_sign_in
+def gachapon():
+	if 'request' not in request.args:
+		return render_template('gachapon.html')
+	sticker, errors, next_available_datetime, last_received_datetime = process_gachapon_request()
 	return render_template(
 		'gachapon.html',
 		sticker=sticker,
