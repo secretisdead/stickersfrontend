@@ -277,8 +277,12 @@ class StickersFrontend(Stickers):
 		sticker.group_names = self.accounts.group_names_from_bits(
 			sticker.group_bits
 		)
-	def grant_sticker(self, sticker_id, user_id, granting_user_id=''):
-		collected_sticker = super().grant_sticker(sticker_id, user_id)
+	def grant_sticker(self, sticker_id, user_id, receive_time=None, granting_user_id=''):
+		collected_sticker = super().grant_sticker(
+			sticker_id,
+			user_id,
+			receive_time=receive_time,
+		)
 		self.populate_sticker_properties(collected_sticker.sticker)
 		self.access_log.create_log(
 			scope='grant_sticker',
