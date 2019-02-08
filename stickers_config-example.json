@@ -18,7 +18,7 @@
 	"receive_sticker_cooldown_periods_by_utc": false,
 
 	"maximum_name_length": 16,
-	"maximum_display_length": 16,
+	"maximum_display_length": 32,
 
 	"categories": [
 		"people",
