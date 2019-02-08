@@ -23,6 +23,13 @@ def initialize(config, accounts, access_log, engine, install):
 			sticker_image_filename='STICKER_IMAGE_FILENAME'
 		).replace('STICKER_IMAGE_FILENAME', '{}')
 
+	# use default sticker placements file uri if custom uri isn't specified
+	if not g.stickers.config['sticker_placements_file_uri']:
+		g.stickers.config['sticker_placements_file_uri'] = url_for(
+			'stickers_static.placements_file',
+			placements_filename='STICKER_PLACEMENTS_FILENAME'
+		).replace('STICKER_PLACEMENTS_FILENAME', '{}')
+
 	if g.stickers.accounts.current_user:
 		# check for custom max stickers per target
 		if '' in g.stickers.accounts.current_user.permissions:

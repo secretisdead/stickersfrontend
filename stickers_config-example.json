@@ -6,6 +6,7 @@
 	"sticker_placements_path": "path/to/sticker/placements/directory",
 
 	"sticker_image_file_uri": "",
+	"sticker_placements_file_uri": "",
 
 	"sticker_edge": 64,
 
