@@ -7,13 +7,21 @@ from flask import url_for, request, abort
 
 from .. import StickersFrontend
 
-def initialize(config, accounts, access_log, engine, install):
+def initialize(
+		config,
+		accounts,
+		access_log,
+		engine,
+		install=False,
+		connection=None,
+	):
 	g.stickers = StickersFrontend(
 		config,
 		accounts,
 		access_log,
 		engine,
 		install=install,
+		connection=connection,
 	)
 
 	# use default sticker image file uri if custom uri isn't specified
