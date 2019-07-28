@@ -52,7 +52,7 @@ def post_sticker(template, sticker=None, **kwargs):
 	errors = []
 	if 'remove_sticker_image' in request.form:
 		g.stickers.remove_sticker_image(sticker)
-	elif 'sticker_image' in request.files:
+	elif 'sticker_image' in request.files and '' != request.files['sticker_image'].filename:
 		try:
 			image = g.stickers.process_sticker_image(request.files['sticker_image'])
 		except ValueError as e:
