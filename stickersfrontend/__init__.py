@@ -282,6 +282,8 @@ class StickersFrontend(Stickers):
 				):
 				return
 		sticker.image = self.config['sticker_image_file_uri'].format(sticker.id)
+		# serve files over same protocol as pages
+		sticker.image = sticker.image.replace('https:', '').replace('http:', '')
 
 	def populate_sticker_properties(self, sticker):
 		if not sticker:
